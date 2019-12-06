@@ -1,0 +1,30 @@
+Estructura json
+Base de datos {
+	Usuario{
+		id: 1(PK),
+		nombre_usuario:usuario1,
+		password:encriptada,
+		encargado: True
+	}
+	Silla{
+		id: 1(PK),
+		mesa: Mesa1(FK),
+		disponible: True
+	}
+	Mesa{
+		id: 1(PK),
+		ubicacion: 1,
+		disponible: True,
+		numero_sillas:4
+	}
+	LogMesa{
+		mesa: Mesa1(FK),
+		hora: time,
+		disponible: True
+	}
+	LogSilla{
+		silla: Silla(FK),
+		hora: time,
+		disponible: True
+	}
+}
