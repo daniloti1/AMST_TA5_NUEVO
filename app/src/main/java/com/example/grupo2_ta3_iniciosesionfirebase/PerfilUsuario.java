@@ -54,9 +54,11 @@ public class PerfilUsuario extends AppCompatActivity {
         Picasso.with(getApplicationContext()).load(photo).into(imv_photo);
 
         iniciarBaseDeDatos();
-        leerTweets();
-        consultarSilla("1");
-        escribirTweets(info_user.get("user_name"), info_user.get("user_provider_id"), info_user.get("user_phone_number"));
+        //leerTweets();
+        consultarSilla("1", "1");
+        consultarMesa("1");
+        enviarInformacionMesa("1", true);
+        //escribirTweets(info_user.get("user_name"), info_user.get("user_provider_id"), info_user.get("user_phone_number"));
     }
 
     public void cerrarSesion(View view){
@@ -88,9 +90,9 @@ public class PerfilUsuario extends AppCompatActivity {
                 });
     }
 
-    public void consultarSilla(String id){
-        DatabaseReference sillas = db_reference.child("Mesa").child("Sillas");
-        sillas.child(id).child("Disponible")
+    public void consultarSilla(String idMesa, String idSilla){
+        DatabaseReference sillas = db_reference.child("Mesa").child(idMesa).child("Sillas");
+        sillas.child(idSilla).child("Disponible")
                 .addValueEventListener (new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -109,6 +111,31 @@ public class PerfilUsuario extends AppCompatActivity {
                 });;
     }
 
+    public void consultarMesa(String id){
+        DatabaseReference mesas = db_reference.child("Mesa");
+        mesas.child(id).child("Disponible")
+                .addValueEventListener (new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        System.out.println(dataSnapshot.getValue());
+                        if ((boolean)dataSnapshot.getValue()) {
+                            System.out.println("Mesa disponible");
+                        } else {
+                            System.out.println("Mesa ocupada");
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError error) {
+                        System.out.println(error.toException());
+                    }
+                });;
+    }
+
+    public void enviarInformacionMesa(String id, boolean disponible){
+        DatabaseReference mesas = db_reference.child("Mesa");
+        mesas.child(id).child("Disponible").setValue(disponible);
+    }
 
     public void escribirTweets(String autor, String providerId, String phoneNumber){
         String tweet = "hola mundo firebase 2";
